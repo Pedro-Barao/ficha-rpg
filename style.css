@@ -698,3 +698,37 @@ button {
     font-size: 0.98rem;
   }
 }
+
+
+@media (max-width: 768px) {
+  .app-shell {
+    width: min(100%, calc(100% - 20px));
+    margin: 10px auto 24px;
+    padding-top: 0;
+  }
+
+  .topbar {
+    position: static;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    padding: 18px;
+    z-index: auto;
+    backdrop-filter: none;
+  }
+
+  .topbar h1 {
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+
+  .toolbar {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar button {
+    width: 100%;
+  }
+}
