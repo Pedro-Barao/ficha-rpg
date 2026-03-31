@@ -104,6 +104,7 @@ label span,
 .app-shell {
   width: min(1240px, calc(100% - 28px));
   margin: 18px auto 30px;
+  padding-top: 124px;
   display: grid;
   gap: 18px;
 }
@@ -117,11 +118,19 @@ label span,
 }
 
 .topbar {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1240px, calc(100% - 28px));
   padding: 22px;
   display: flex;
   justify-content: space-between;
   gap: 18px;
   align-items: flex-start;
+  z-index: 40;
+  backdrop-filter: blur(12px);
+  background: linear-gradient(180deg, rgba(23,29,41,0.97), rgba(23,29,41,0.94));
 }
 
 .topbar h1,
@@ -521,6 +530,7 @@ button {
   .app-shell {
     width: min(100%, calc(100% - 16px));
     margin: 8px auto 18px;
+    padding-top: 170px;
     gap: 12px;
   }
 
@@ -540,11 +550,10 @@ button {
   }
 
   .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    backdrop-filter: blur(12px);
-    background: linear-gradient(180deg, rgba(23,29,41,0.96), rgba(23,29,41,0.92));
+    top: 8px;
+    width: min(100%, calc(100% - 16px));
+    z-index: 40;
+    background: linear-gradient(180deg, rgba(23,29,41,0.98), rgba(23,29,41,0.95));
   }
 
   .toolbar {
