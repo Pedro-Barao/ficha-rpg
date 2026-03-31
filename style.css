@@ -1,4 +1,5 @@
 :root {
+  --topbar-offset: 160px;
   --bg: #0d1017;
   --panel: #171d29;
   --panel-soft: #20283a;
@@ -104,7 +105,7 @@ label span,
 .app-shell {
   width: min(1240px, calc(100% - 28px));
   margin: 18px auto 30px;
-  padding-top: 124px;
+  padding-top: var(--topbar-offset);
   display: grid;
   gap: 18px;
 }
@@ -119,7 +120,7 @@ label span,
 
 .topbar {
   position: fixed;
-  top: 12px;
+  top: max(12px, env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
   width: min(1240px, calc(100% - 28px));
@@ -724,6 +725,34 @@ button {
   }
 
   .toolbar {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar button {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 980px) {
+  .app-shell {
+    width: min(100% - 16px, 1240px);
+    margin: 8px auto 24px;
+  }
+
+  .topbar {
+    width: calc(100% - 16px);
+    left: 8px;
+    right: 8px;
+    transform: none;
+    top: max(8px, env(safe-area-inset-top));
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .toolbar {
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr;
   }

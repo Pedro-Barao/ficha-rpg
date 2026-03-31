@@ -1011,7 +1011,20 @@ function setupStaticListeners() {
   });
 }
 
+
+function syncTopbarOffset() {
+  const topbar = document.querySelector('.topbar');
+  if (!topbar) return;
+  const offset = Math.ceil(topbar.getBoundingClientRect().height + 24);
+  document.documentElement.style.setProperty('--topbar-offset', `${offset}px`);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderAll();
   setupStaticListeners();
+  syncTopbarOffset();
+  window.addEventListener('resize', syncTopbarOffset);
+  window.addEventListener('orientationchange', syncTopbarOffset);
+  setTimeout(syncTopbarOffset, 0);
+  setTimeout(syncTopbarOffset, 300);
 });
