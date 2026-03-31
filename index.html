@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ficha RPG do Zero</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Ficha digital editável</p>
+        <h1>Ficha RPG do zero</h1>
+        <p class="muted">Crie um personagem novo, adicione imagem, atributos, recursos, itens e habilidades com buffs, debuffs, custo e consequências.</p>
+      </div>
+      <div class="toolbar">
+        <button data-action="new-sheet" class="danger-outline">Nova ficha</button>
+        <button data-action="export-json">Exportar JSON</button>
+        <button data-action="import-json">Importar JSON</button>
+        <input type="file" id="import-json-input" accept="application/json" hidden>
+      </div>
+    </header>
+
+    <section class="panel hero-panel">
+      <div class="avatar-panel">
+        <label class="avatar-drop" for="avatar-input">
+          <img id="avatar-preview" class="avatar-image" alt="Imagem do personagem">
+          <span id="avatar-placeholder">Clique para enviar a imagem</span>
+        </label>
+        <input type="file" id="avatar-input" accept="image/*" hidden>
+        <div class="avatar-actions">
+          <button data-action="clear-avatar" class="ghost">Remover imagem</button>
+        </div>
+      </div>
+
+      <div class="profile-grid">
+        <label>
+          <span>Nome do personagem</span>
+          <input type="text" id="profile-name" placeholder="Ex.: Arthur, Nyx, Big">
+        </label>
+        <label>
+          <span>Jogador</span>
+          <input type="text" id="profile-player" placeholder="Nome do jogador">
+        </label>
+        <label>
+          <span>Classe / Trilha</span>
+          <input type="text" id="profile-className" placeholder="Ex.: Combatente de Impacto">
+        </label>
+        <label>
+          <span>Origem / Conceito</span>
+          <input type="text" id="profile-origin" placeholder="Ex.: Sobrevivente, ocultista, técnico">
+        </label>
+        <label>
+          <span>Nível</span>
+          <input type="number" id="profile-level" min="0" step="1" value="0">
+        </label>
+        <label class="wide">
+          <span>Notas gerais</span>
+          <textarea id="profile-notes" rows="3" placeholder="Anote detalhes do personagem, estilo de jogo, lembretes ou regras da mesa."></textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel roller-panel">
+      <div class="section-head">
+        <div>
+          <h2>Central de rolagens</h2>
+          <p class="muted">Selecione um atributo abaixo ou monte o teste manualmente. A regra segue o formato X/Y = Xd20.</p>
+        </div>
+        <div class="selected-box">
+          <span>Atributo selecionado</span>
+          <strong id="selected-attribute-name">Nenhum</strong>
+        </div>
+      </div>
+
+      <div class="roll-builder">
+        <label>
+          <span>Valor</span>
+          <input type="number" id="main-roll-current" min="0" value="0">
+        </label>
+        <div class="slash">/</div>
+        <label>
+          <span>Base</span>
+          <input type="number" id="main-roll-base" min="0" value="0">
+        </label>
+        <div class="rule-box">
+          <span>Regra</span>
+          <strong id="main-roll-rule">0/0 = 0d20</strong>
+        </div>
+        <button data-action="roll-main-test" class="primary">Rolar teste</button>
+      </div>
+
+      <div id="main-roll-result" class="result-box">Aguardando rolagem.</div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head compact">
+        <div>
+          <h2>Vida, energia e progresso</h2>
+          <p class="muted">Essas barras já vêm zeradas para um jogador novo. Você pode renomear e ajustar tudo.</p>
+        </div>
+      </div>
+      <div id="tracks-container" class="tracks-grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>Atributos</h2>
+          <p class="muted">Clique no atributo para jogar esse teste na central de rolagens.</p>
+        </div>
+        <button data-action="add-attribute">+ Adicionar atributo</button>
+      </div>
+      <div id="attributes-container" class="attributes-grid"></div>
+    </section>
+
+    <div class="layout-grid">
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Recursos e consumíveis</h2>
+            <p class="muted">Crie recursos como munição, sanidade, energético, poções, cargas ou qualquer contador personalizado.</p>
+          </div>
+          <button data-action="add-resource">+ Adicionar recurso</button>
+        </div>
+        <div id="resources-container" class="stack"></div>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Itens e ataques</h2>
+            <p class="muted">Cadastre armas, equipamentos e ataques com fórmula de dano própria.</p>
+          </div>
+          <button data-action="add-item">+ Adicionar item</button>
+        </div>
+        <div id="items-container" class="stack"></div>
+      </section>
+    </div>
+
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>Habilidades e poderes</h2>
+          <p class="muted">Monte habilidades com teste, dano e efeitos automáticos. Buffs usam valores positivos. Debuffs e custos usam valores negativos.</p>
+        </div>
+        <button data-action="add-ability">+ Adicionar habilidade</button>
+      </div>
+      <div class="helper-card">
+        <strong>Exemplo de configuração:</strong> para uma habilidade tipo <em>Energizado</em>, você pode criar três efeitos: <strong>Energia atual +10</strong>, <strong>Vida atual -7</strong> e <strong>Energético atual -1</strong>.
+      </div>
+      <div id="abilities-container" class="stack"></div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
